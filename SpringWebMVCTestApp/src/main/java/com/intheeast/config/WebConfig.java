@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.function.RouterFunction;
@@ -22,13 +23,21 @@ import static org.springframework.web.servlet.function.RouterFunctions.route; //
 
 import com.intheeast.handlerfn.PersonFormHandler;
 import com.intheeast.handlerfn.PersonHandler;
+import com.intheeast.interceptor.MyInterceptor;
 
 
 @Configuration
 @EnableWebMvc  // 웹 관련 설정 활성화
-@ComponentScan(basePackages = {"com.intheeast.controller", "com.intheeast.handlerfn"})  // 컨트롤러 스캔
+@ComponentScan(basePackages = {"com.intheeast.controller", "com.intheeast.handlerfn","com.intheeast.interceptor"})  // 컨트롤러 스캔
 public class WebConfig implements WebMvcConfigurer {
+	
+	private final MyInterceptor myInterceptor;
 
+    // 생성자 주입을 통해 인터셉터 빈을 주입받음
+    public WebConfig(MyInterceptor myInterceptor) {
+        this.myInterceptor = myInterceptor;
+    }
+    
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -80,4 +89,12 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(new ResourceHttpMessageConverter());        
 
     }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 모든 경로에 대해 인터셉터 적용
+        registry.addInterceptor(myInterceptor)
+        		.addPathPatterns("/initbinder/*");
+    }
 }
+    
+   
