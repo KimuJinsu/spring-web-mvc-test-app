@@ -1,4 +1,4 @@
-# 🌐 Spring Web MVC 테스트 애플리케이션
+# 🌐 Spring Web MVC 테스트 애플리케이션.
 
 이 프로젝트는 **Spring Web MVC** 패턴을 기반으로 한 웹 애플리케이션입니다. Spring MVC는 Model-View-Controller 아키텍처를 사용하여 비즈니스 로직과 사용자 인터페이스를 분리하고, 다양한 계층에서 역할을 분리하는 데 중점을 둡니다.
 
